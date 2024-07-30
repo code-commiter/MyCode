@@ -1,0 +1,34 @@
+{
+  "buildTools": {
+    "Maven": {
+      "Linux": {
+        "1.0.0": "Linux Location",
+        "2.0.0": "Linux Location"
+      },
+      "Windows": {
+        "1.0.0": "Windows dir path",
+        "2.0.0": "Windows dir path"
+      }
+    },
+    "Gradle": {
+      "Linux": {
+        "1.0.0": "New Linux Location"
+      },
+      "Windows": {
+        "1.0.0": "New Windows dir path"
+      }
+    }
+  },
+  "runtimeTools": {
+    "DotNetCore": {
+      "Linux": {
+        "1.0.0": "Linux Location",
+        "2.0.0": "Linux Location"
+      },
+      "Windows": {
+        "1.0.0": "Windows dir path",
+        "2.0.0": "Windows dir path"
+      }
+    }
+  }
+}
