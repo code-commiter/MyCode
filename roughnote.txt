@@ -1,1 +1,9 @@
-Sivaram, some of the logic is missing from the code you've implemented. Shrijesh and I have to go through it line by line to verify that all the logic is in place. If this continues, it will be difficult for us to have confidence in your work. We expect more responsibility from someone with ten years of experience. You should take ownership of the story, conduct thorough research, and ensure everything works as expected. It is not productive for us to spend hours confirming the quality of your code. Sometimes, it feels like it would be more efficient for us to write it ourselves."
+Team,
+
+I hope we are clear on the expectations for the assigned epics. I’m sharing the PowerPoint presentation we used for our discussion, which includes the design and code templates. This should provide you with the information needed to start on your epics.
+
+We can proceed with all three epics in parallel since they use the same conversion method. Please analyze the parameters for each pipeline, determine the required conversion logic, and document your findings.
+
+To ensure we make the most of our time, we’ll divide the tasks as follows: some team members will focus on developing the core conversion engine and reusable logic, while others will work on pipeline-specific conversion rules,  logic and parameter documentation. This approach will help us work efficiently and meet our deadlines.
+
+Please reach out to me if you need any assistance.
