@@ -15,3 +15,18 @@ Commitment to Continuous Learning: Maintained a proactive approach to learning a
 
 Proven Track Record of Innovation: Demonstrated ability to develop and deploy effective proofs of concept and creative solutions, showcasing expertise and a forward-thinking mindset in diverse technological landscapes.
 
+
+
+
+Broad Technology Mastery: Started as a .NET developer and expanded expertise to include a wide range of technologies such as Python, Java, Angular, Groovy, YAML (for Ansible playbooks), OpenShift, Docker, and Kubernetes. Proficiency also extends to CI/CD tools like Jenkins, XLR, and Ansible Tower.
+
+Electronics and Automation Enthusiast: Engages in electronics and automation projects using Arduino and ESP microcontrollers. Explores proofs of concept with Vision Language Models (VLMs), Large Language Models (LLMs), and Stable Diffusion models for creative applications.
+
+Rapid Adaptation and Learning: Known for quickly learning and adapting to emerging technologies and tools to meet evolving project demands, ensuring the delivery of up-to-date and effective solutions.
+
+Innovative Problem-Solving: Leverages extensive knowledge to design and implement complex solutions, including sophisticated web applications, robust APIs, and dynamic plugins, driving impactful results.
+
+Commitment to Continuous Learning: Maintains a proactive approach to learning and applying the latest technologies and methodologies, ensuring relevance and effectiveness in a fast-paced industry.
+
+Gratitude for Learning Opportunities: Grateful for the opportunity to continually learn and apply a diverse array of technologies, significantly enriching the professional journey and enhancing technical versatility.
+
