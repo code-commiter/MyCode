@@ -7,3 +7,17 @@ One more point to consider is that this logic will run only once per pipeline. O
 It’s also important to note that looping through target parameters can be applied across all 23 pipelines. I trust you’ve considered all options.
 
 For now, we’ll proceed with our current approach. However, if your method demonstrates significant benefits, we can certainly reevaluate. Remember, saving 1 millisecond per build across 18,000 builds only amounts to 18 seconds per daay, which is minimal.
+
+
+
+def startTime = System.nanoTime()
+def count = 0
+
+(1..Integer.MAX_VALUE).each { 
+    count++ // Empty operation
+    if (System.nanoTime() - startTime >= 1_000_000) { // Stop after 1ms
+        return
+    }
+}
+
+println "Executed $count iterations in 1 ms"
