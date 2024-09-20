@@ -10,14 +10,15 @@ For now, we’ll proceed with our current approach. However, if your method demo
 
 
 
-def startTime = System.nanoTime()
-def count = 0
+def countIterationsInOneMillisecond() {
+    def startTime = System.nanoTime()
+    def count = 0
 
-(1..Integer.MAX_VALUE).each { 
-    count++ // Empty operation
-    if (System.nanoTime() - startTime >= 1_000_000) { // Stop after 1ms
-        return
+    // Loop until 1 millisecond (1000000 nanoseconds) has passed
+    while ((System.nanoTime() - startTime) < 1000000) {
+        count++ // Empty operation
     }
-}
 
-println "Executed $count iterations in 1 ms"
+    // Print the total count of iterations
+    println "Executed $count iterations in 1 ms"
+}
