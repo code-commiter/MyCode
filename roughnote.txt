@@ -10,15 +10,18 @@ For now, we’ll proceed with our current approach. However, if your method demo
 
 
 
-def countIterationsInOneMillisecond() {
-    def startTime = System.nanoTime()
-    def count = 0
+def measureEmptyForLoop() {
+    def startTime = System.currentTimeMillis() // Get current time in milliseconds
+    int count = 0
 
-    // Loop until 1 millisecond (1000000 nanoseconds) has passed
-    while ((System.nanoTime() - startTime) < 1000000) {
-        count++ // Empty operation
+    // Empty for loop that runs for 1000 iterations
+    for (int i = 0; i < 1000; i++) {
+        count++ // Empty operation (or you can omit this line)
     }
 
-    // Print the total count of iterations
-    println "Executed $count iterations in 1 ms"
+    def elapsedTime = System.currentTimeMillis() - startTime // Calculate elapsed time
+    println "Executed an empty loop for 1000 iterations in ${elapsedTime} ms"
 }
+
+// Call the method
+measureEmptyForLoop()
