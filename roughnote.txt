@@ -1,27 +1,3 @@
-I believe we've discussed this before, there’s always a trade-off between performance, simplicity, and readability. Knowing when to prioritize each aspect is where expertise comes into play. While the loop count is high, the null check means that no code executes during those iterations. If we were making a database or API call, your concerns would be more relevant; however, in this case, we likely won’t save even a millisecond.
+While you argue that your optimized code reduces the loop count by 40 when the target parameter is 50, let’s take a closer look. Your find loop on the target parameter runs 50 times each time it’s called, and since you use this in three places, that results in 150 loops for a single set of parameters. For 10 parameters, that totals 1500 loops. So instead of saving 40 loops, your code is actually adding up to 1500.
 
-If we loop through the user parameters, we’d need to introduce additional conditional logic, which would complicate the code. We covered this a week ago, and if you still think your approach is better, I encourage you to conduct some performance testing to see how much time you can actually save.
-
-One more point to consider is that this logic will run only once per pipeline. Once the parameters are converted to the new pipeline, this logic will no longer be used. Therefore, the 18,000 builds won't rely on this temporary solution, which is intended to last only a few months.
-
-It’s also important to note that looping through target parameters can be applied across all 23 pipelines. I trust you’ve considered all options.
-
-For now, we’ll proceed with our current approach. However, if your method demonstrates significant benefits, we can certainly reevaluate. Remember, saving 1 millisecond per build across 18,000 builds only amounts to 18 seconds per daay, which is minimal.
-
-
-
-def measureEmptyForLoop() {
-    def startTime = System.currentTimeMillis() // Get current time in milliseconds
-    int count = 0
-
-    // Empty for loop that runs for 1000 iterations
-    for (int i = 0; i < 1000; i++) {
-        count++ // Empty operation (or you can omit this line)
-    }
-
-    def elapsedTime = System.currentTimeMillis() - startTime // Calculate elapsed time
-    println "Executed an empty loop for 1000 iterations in ${elapsedTime} ms"
-}
-
-// Call the method
-measureEmptyForLoop()
+I believe I’ve helped avoid a much larger issue here, and I hope you’ll consider that rather than approaching this as a conflict. Let’s work together constructively.
