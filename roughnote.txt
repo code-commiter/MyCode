@@ -1,51 +1,65 @@
 def removeComments(fileContent) {
     // Remove single line comments and block comments
-    def cleanedContent = fileContent.replaceAll(/\/\/.*?$|\/\*.*?\*\//, '', [Pattern.MULTILINE])
-    return cleanedContent
+    return fileContent.replaceAll(/\/\/.*?$|\/\*.*?\*\//, '', [Pattern.MULTILINE])
 }
 
-def validateAssignments(fileContent) {
+def validateAssignments(pipelineContent) {
+    // Pattern for invalid cases (variable-to-variable assignments and method definitions)
+    def invalidPattern = /(\w+)\s*=\s*(\w+)|def\s+\w+\s*\(\s*\)\s*\{/
+
+    // Check for any invalid patterns
+    return !(pipelineContent =~ invalidPattern) // Return true if valid
+}
+
+def validatePipelines(fileContent) {
     // Remove comments before validation
     fileContent = removeComments(fileContent)
 
-    // Pattern for variable-to-variable assignments
-    def variableAssignmentPattern = /(\w+)\s*=\s*(\w+)/
-    
-    // Pattern for valid assignments (includes true, false, quoted strings, numbers, and arrays)
-    def validAssignmentPattern = /(\w+)\s*=\s*(true|false|"\w+"|\d+|\[.*?\])/
+    // Find pipelines and count them
+    def pipelines = fileContent.findAll(/(?<name>\w+)\s*\n?\s*\{/)
 
-    def lines = fileContent.split('\n')
-    def invalidAssignments = []
-
-    for (line in lines) {
-        if (line =~ variableAssignmentPattern) {
-            // If it matches variable-to-variable assignment
-            invalidAssignments << line // Add to invalid list
-        } else if (line =~ validAssignmentPattern) {
-            // If it matches a valid assignment
-            // Do nothing, it's valid
-        } else if (!line.trim().isEmpty()) {
-            // If the line doesn't match any expected pattern and is not empty
-            invalidAssignments << line // Handle unexpected lines
-        }
+    // Check if there are multiple pipelines
+    if (pipelines.size() > 1) {
+        return "Invalid: More than one pipeline found."
     }
 
-    return invalidAssignments.isEmpty() ? "All assignments are valid." : "Invalid assignments found: ${invalidAssignments.join(', ')}"
+    // If there is exactly one pipeline, validate it
+    if (pipelines.size() == 1) {
+        def pipelineMatch = pipelines[0]
+        def pipelineName = pipelineMatch[0] // Capture the pipeline name
+        def pipelineContent = fileContent.split(/(?=\w+\s*\n?\s*\{)/)[0] // Get the first pipeline
+
+        if (!validateAssignments(pipelineContent)) {
+            return "Invalid assignments found in the pipeline."
+        }
+
+        return "Pipeline '${pipelineName}' is valid."
+    }
+
+    return "No pipelines found."
 }
 
-// Example content with comments
+// Example content with multiple pipelines and opening braces on new lines
 def fileContent = """
 // This is a single line comment
-var1 = true /* This is a block comment */
-var2 = false // Another line comment
-var3 = anotherVarName // Invalid assignment
-var4 = "someString"
-/* Multi-line
-   block comment */
-var5 = 42
-var6 = [1, 2, 3] // Valid assignment
-var7 = ["a", "b", "c"]
+pipeline1 
+{
+    var1 = true // Valid
+    var2 = false // Valid
+    var3 = anotherVarName // Invalid
+}
+
+pipeline2 {
+    def myMethod() { // Invalid
+        // Some logic here
+    }
+    var4 = "someString" // Valid
+}
+
+pipeline3
+{
+    var5 = [1, 2, 3] // Valid
+}
 """
 
-println(validateAssignments(fileContent))
-
+println(validatePipelines(fileContent))
