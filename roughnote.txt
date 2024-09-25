@@ -7,36 +7,40 @@ def validateAssignments(pipelineContent) {
     // Pattern for invalid cases (variable-to-variable assignments and method definitions)
     def invalidPattern = /(\w+)\s*=\s*(\w+)|def\s+\w+\s*\(\s*\)\s*\{/
 
-    // Check for any invalid patterns
-    return !(pipelineContent =~ invalidPattern) // Return true if valid
+    // Return false if any invalid patterns are found
+    return !(pipelineContent =~ invalidPattern) // Return false if invalid
 }
 
 def validatePipelines(fileContent) {
     // Remove comments before validation
     fileContent = removeComments(fileContent)
 
-    // Find pipelines and count them
-    def pipelines = fileContent.findAll(/(?<name>\w+)\s*\n?\s*\{/)
+    // Regex to match the pipeline name and its content
+    def pipelinePattern = /(?<name>\w+)\s*\n?\s*\{([^}]*\{[^}]*\}[^}]*)*\}/
 
-    // Check if there are multiple pipelines
+    // Find all pipelines in the content
+    def pipelines = fileContent.findAll(pipelinePattern)
+
+    // Return false if more than one pipeline is found
     if (pipelines.size() > 1) {
-        return "Invalid: More than one pipeline found."
+        return false
     }
 
     // If there is exactly one pipeline, validate it
     if (pipelines.size() == 1) {
         def pipelineMatch = pipelines[0]
-        def pipelineName = pipelineMatch[0] // Capture the pipeline name
-        def pipelineContent = fileContent.split(/(?=\w+\s*\n?\s*\{)/)[0] // Get the first pipeline
+        def pipelineContent = pipelineMatch[0] // Capture the entire pipeline block
 
+        // Return false if invalid assignments are found
         if (!validateAssignments(pipelineContent)) {
-            return "Invalid assignments found in the pipeline."
+            return false
         }
 
-        return "Pipeline '${pipelineName}' is valid."
+        // Return true if the pipeline is valid
+        return true
     }
 
-    return "No pipelines found."
+    return false // No pipelines found
 }
 
 // Example content with multiple pipelines and opening braces on new lines
@@ -62,4 +66,4 @@ pipeline3
 }
 """
 
-println(validatePipelines(fileContent))
+println(validatePipelines(fileContent)) // This will print false if invalid
