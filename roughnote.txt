@@ -1,1 +1,51 @@
+def removeComments(fileContent) {
+    // Remove single line comments and block comments
+    def cleanedContent = fileContent.replaceAll(/\/\/.*?$|\/\*.*?\*\//, '', [Pattern.MULTILINE])
+    return cleanedContent
+}
+
+def validateAssignments(fileContent) {
+    // Remove comments before validation
+    fileContent = removeComments(fileContent)
+
+    // Pattern for variable-to-variable assignments
+    def variableAssignmentPattern = /(\w+)\s*=\s*(\w+)/
+    
+    // Pattern for valid assignments (includes true, false, quoted strings, numbers, and arrays)
+    def validAssignmentPattern = /(\w+)\s*=\s*(true|false|"\w+"|\d+|\[.*?\])/
+
+    def lines = fileContent.split('\n')
+    def invalidAssignments = []
+
+    for (line in lines) {
+        if (line =~ variableAssignmentPattern) {
+            // If it matches variable-to-variable assignment
+            invalidAssignments << line // Add to invalid list
+        } else if (line =~ validAssignmentPattern) {
+            // If it matches a valid assignment
+            // Do nothing, it's valid
+        } else if (!line.trim().isEmpty()) {
+            // If the line doesn't match any expected pattern and is not empty
+            invalidAssignments << line // Handle unexpected lines
+        }
+    }
+
+    return invalidAssignments.isEmpty() ? "All assignments are valid." : "Invalid assignments found: ${invalidAssignments.join(', ')}"
+}
+
+// Example content with comments
+def fileContent = """
+// This is a single line comment
+var1 = true /* This is a block comment */
+var2 = false // Another line comment
+var3 = anotherVarName // Invalid assignment
+var4 = "someString"
+/* Multi-line
+   block comment */
+var5 = 42
+var6 = [1, 2, 3] // Valid assignment
+var7 = ["a", "b", "c"]
+"""
+
+println(validateAssignments(fileContent))
 
