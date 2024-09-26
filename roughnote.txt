@@ -1,69 +1,33 @@
-def removeComments(fileContent) {
-    // Remove single line comments and block comments
-    return fileContent.replaceAll(/\/\/.*?$|\/\*.*?\*\//, '', [Pattern.MULTILINE])
-}
+import groovy.json.JsonOutput
 
-def validateAssignments(pipelineContent) {
-    // Pattern for invalid cases (variable-to-variable assignments and method definitions)
-    def invalidPattern = /(\w+)\s*=\s*(\w+)|def\s+\w+\s*\(\s*\)\s*\{/
+def abc = [
+    var3: 123,
+    var4: "456",  // Use ':' instead of '=' for map entries
+    var1: true,
+    var2: false,
+    var5: ["123"],
+    var6: [
+        var1: ["a123", "345"],
+        var2: ["a123", "345"],
+    ]
+]
 
-    // Return false if any invalid patterns are found
-    return !(pipelineContent =~ invalidPattern) // Return false if invalid
-}
-
-def validatePipelines(fileContent) {
-    // Remove comments before validation
-    fileContent = removeComments(fileContent)
-
-    // Regex to match the pipeline name and its content
-    def pipelinePattern = /(?<name>\w+)\s*\n?\s*\{([^}]*\{[^}]*\}[^}]*)*\}/
-
-    // Find all pipelines in the content
-    def pipelines = fileContent.findAll(pipelinePattern)
-
-    // Return false if more than one pipeline is found
-    if (pipelines.size() > 1) {
-        return false
-    }
-
-    // If there is exactly one pipeline, validate it
-    if (pipelines.size() == 1) {
-        def pipelineMatch = pipelines[0]
-        def pipelineContent = pipelineMatch[0] // Capture the entire pipeline block
-
-        // Return false if invalid assignments are found
-        if (!validateAssignments(pipelineContent)) {
-            return false
+// Function to print the map in a desired format with double quotes for strings
+def printMap(map) {
+    def output = map.collect { k, v ->
+        if (v instanceof Map) {
+            "${k}: [\n${printMap(v).collect { "    $it" }.join('\n')}\n]"
+        } else if (v instanceof List) {
+            "${k}: [${v.collect { it instanceof String ? "\"${it}\"" : it }.join(', ')}]"
+        } else if (v instanceof String) {
+            "${k}: \"${v}\""
+        } else {
+            "${k}: ${v}"
         }
-
-        // Return true if the pipeline is valid
-        return true
-    }
-
-    return false // No pipelines found
+    }.join(',\n')
+    
+    return output
 }
 
-// Example content with multiple pipelines and opening braces on new lines
-def fileContent = """
-// This is a single line comment
-pipeline1 
-{
-    var1 = true // Valid
-    var2 = false // Valid
-    var3 = anotherVarName // Invalid
-}
-
-pipeline2 {
-    def myMethod() { // Invalid
-        // Some logic here
-    }
-    var4 = "someString" // Valid
-}
-
-pipeline3
-{
-    var5 = [1, 2, 3] // Valid
-}
-"""
-
-println(validatePipelines(fileContent)) // This will print false if invalid
+// Print the map
+println "{\n${printMap(abc)}\n}"
