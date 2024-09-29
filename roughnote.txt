@@ -1,2 +1,5 @@
-Our DevOps team builds and maintains frameworks that automate CI and CD processes, ensuring consistency and efficiency across workflows. We provide shared libraries that enable teams to run CI pipelines simply by providing parameters, with no coding required. On the CD side, we extend the XLR tool into a framework that automates release orchestration based on a user-provided config file. This simplifies the release process, allowing teams to focus on their core tasks without needing to manage the details of the CD process.
+What We Do
+Our DevOps team builds and maintains frameworks that automate CI and CD processes, ensuring consistency and efficiency. We provide shared libraries that allow teams to run CI pipelines easily by just giving parameters—no coding required. For CD, we enhance the XLR tool to automatically orchestrate releases based on a user-provided config file.
 
+How We Help End Users
+We make both CI and CD processes easier, so teams can concentrate on their main tasks without worrying about creating scripts for building artifacts or deploying them. By automating these workflows, we enable teams to run CI pipelines and manage releases with minimal effort, leading to faster and more reliable deployments.
