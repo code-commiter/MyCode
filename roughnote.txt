@@ -1,5 +1,7 @@
-What We Do
-Our DevOps team builds and maintains frameworks that automate CI and CD processes, ensuring consistency and efficiency. We provide shared libraries that allow teams to run CI pipelines easily by just giving parameters—no coding required. For CD, we enhance the XLR tool to automatically orchestrate releases based on a user-provided config file.
+Hi Raj,
 
-How We Help End Users
-We make both CI and CD processes easier, so teams can concentrate on their main tasks without worrying about creating scripts for building artifacts or deploying them. By automating these workflows, we enable teams to run CI pipelines and manage releases with minimal effort, leading to faster and more reliable deployments.
+The position is for a developer in the Pipeline team for a pipeline simplification project, which requires expertise in Groovy. However, since we are using Java concepts like inheritance and abstraction, we decided to hire a Java developer rather than someone solely experienced in Groovy, as a Java developer can quickly pick up Groovy in a day or so.
+
+There is no need for UI or database-related development in this pipeline project, and given that we need to secure the resource before the budget cycle ends, we are focusing on candidates with strong Java fundamentals, including OOP concepts.
+
+The candidate we've interviewed is strong in these areas, and it would be ideal if someone from the onshore team could conduct another round of interviews as well.
