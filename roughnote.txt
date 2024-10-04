@@ -1,7 +1,71 @@
-Hi Raj,
+// Function to remove both multi-line (/*...*/) and single-line (//...) comments
+def removeComments(String content) {
+    StringBuilder result = new StringBuilder()
+    boolean inMultiLineComment = false
+    int nestedLevel = 0
 
-The position is for a developer in the Pipeline team for a pipeline simplification project, which requires expertise in Groovy. However, since we are using Java concepts like inheritance and abstraction, we decided to hire a Java developer rather than someone solely experienced in Groovy, as a Java developer can quickly pick up Groovy in a day or so.
+    // Split the content into lines for easier handling
+    content.eachLine { line ->
+        // Check for multi-line comments (/* ... */)
+        if (line.contains("/*")) {
+            inMultiLineComment = true
+            nestedLevel += 1
+        }
 
-There is no need for UI or database-related development in this pipeline project, and given that we need to secure the resource before the budget cycle ends, we are focusing on candidates with strong Java fundamentals, including OOP concepts.
+        // If we're inside a multi-line comment, skip adding this line to result
+        if (!inMultiLineComment) {
+            // Remove single-line comments (// ...)
+            String cleanedLine = line.replaceAll(/\/\/.*$/, "")
+            
+            // Add the line to the result if it’s not empty after removing single-line comments
+            if (cleanedLine.trim()) {
+                result.append(cleanedLine).append("\n")
+            }
+        }
 
-The candidate we've interviewed is strong in these areas, and it would be ideal if someone from the onshore team could conduct another round of interviews as well.
+        // Check for closing of multi-line comments (*/)
+        if (line.contains("*/")) {
+            nestedLevel -= 1
+            if (nestedLevel == 0) {
+                inMultiLineComment = false
+            }
+        }
+    }
+
+    return result.toString()
+}
+
+// Example content with multi-line and single-line comments
+String exampleContent = ''' 
+/* 
+This is a multi-line comment
+/* Another comment block (nested) */
+But this should still be inside the same comment block.
+*/ 
+
+pipeline {
+    agent any // This is a single-line comment
+    stages {
+        stage('Build') { // Another single-line comment
+            steps {
+                echo 'Building...' // And another one
+            }
+        }
+    }
+}
+
+/* A proper multi-line comment */
+'''
+
+println "Original Content:\n"
+println exampleContent
+
+// Remove both multi-line and single-line comments from the example content
+String cleanedContent = removeComments(exampleContent)
+
+println "\nCleaned Content:\n"
+println cleanedContent
+
+// Optionally, save the cleaned content to a file (commented out for demonstration purposes)
+// File outputFile = new File('CleanedJenkinsfile.groovy')
+// outputFile.text = cleanedContent
