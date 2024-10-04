@@ -1,6 +1,6 @@
 // Function to remove both multi-line (/*...*/) and single-line (//...) comments
-def removeComments(String content) {
-    StringBuilder result = new StringBuilder()
+// and check for variable declarations. Returns true if valid, false if invalid.
+def isFileValid(String content) {
     boolean inMultiLineComment = false
     int nestedLevel = 0
 
@@ -12,14 +12,22 @@ def removeComments(String content) {
             nestedLevel += 1
         }
 
-        // If we're inside a multi-line comment, skip adding this line to result
+        // If we're inside a multi-line comment, skip this line
         if (!inMultiLineComment) {
             // Remove single-line comments (// ...)
-            String cleanedLine = line.replaceAll(/\/\/.*$/, "")
-            
-            // Add the line to the result if it’s not empty after removing single-line comments
-            if (cleanedLine.trim()) {
-                result.append(cleanedLine).append("\n")
+            String cleanedLine = line.replaceAll(/\/\/.*$/, "").trim() // Remove comments and trim whitespace
+
+            // If the line is not empty after removing comments, check for variable declarations
+            if (cleanedLine) {
+                // Check for variable declarations (simple check for 'def' or type)
+                // This regex matches common variable declarations in Groovy
+                def varPattern = /\b(def|int|String|boolean|double|float|long|char|List|Map|Set|ArrayList|HashMap|HashSet)\s+\w+/
+                def matches = cleanedLine.findAll(varPattern)
+
+                // If matches are found, the file is invalid; return false immediately
+                if (matches) {
+                    return false // Early exit
+                }
             }
         }
 
@@ -32,11 +40,12 @@ def removeComments(String content) {
         }
     }
 
-    return result.toString()
+    // If no variable declarations were found, return true (valid)
+    return true
 }
 
-// Example content with multi-line and single-line comments
-String exampleContent = ''' 
+// Example content with multi-line and single-line comments and variable declarations
+String exampleContentValid = ''' 
 /* 
 This is a multi-line comment
 /* Another comment block (nested) */
@@ -46,9 +55,9 @@ But this should still be inside the same comment block.
 pipeline {
     agent any // This is a single-line comment
     stages {
-        stage('Build') { // Another single-line comment
+        stage('Build') { 
             steps {
-                echo 'Building...' // And another one
+                echo 'Building...' 
             }
         }
     }
@@ -57,15 +66,33 @@ pipeline {
 /* A proper multi-line comment */
 '''
 
-println "Original Content:\n"
-println exampleContent
+String exampleContentInvalid = ''' 
+/* 
+This is a multi-line comment
+/* Another comment block (nested) */
+But this should still be inside the same comment block.
+*/ 
 
-// Remove both multi-line and single-line comments from the example content
-String cleanedContent = removeComments(exampleContent)
+pipeline {
+    agent any // This is a single-line comment
+    stages {
+        def myVar = 'Hello' // Variable declaration
+        String anotherVar // Variable declaration without initialization
+        stage('Build') { 
+            steps {
+                echo 'Building...' 
+            }
+        }
+    }
+}
 
-println "\nCleaned Content:\n"
-println cleanedContent
+/* A proper multi-line comment */
+'''
 
-// Optionally, save the cleaned content to a file (commented out for demonstration purposes)
-// File outputFile = new File('CleanedJenkinsfile.groovy')
-// outputFile.text = cleanedContent
+// Test with valid example
+boolean isValid = isFileValid(exampleContentValid)
+println "Valid File Check: ${isValid} (Expected: true)"
+
+// Test with invalid example
+isValid = isFileValid(exampleContentInvalid)
+println "Invalid File Check: ${isValid} (Expected: false)"
