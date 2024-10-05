@@ -1,1 +1,6 @@
-He has good communication skills and clearly presents information, making it easy to understand. He demonstrated a strong knowledge of Java fundamentals, including static methods, constructors, method overloading, and overriding, and provided good insights into memory management, explaining the differences between heap and stack memory allocation for objects and primitive types. Additionally, he exhibited a solid grasp of OOP principles such as inheritance, encapsulation, abstraction, and polymorphism. Overall, he showcased a strong theoretical foundation in Java.
+Consolidate pipelines that share similarities.
+Streamline redundant code in pipeline libraries.
+Standardize parameter handling across libraries.
+Improve versioning to ease upgrade maintenance.
+Simplify logs for better triage and issue detection.
+Increase automation in testing for reliable quality.
